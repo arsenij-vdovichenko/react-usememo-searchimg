@@ -91,18 +91,21 @@
 
 
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import Searchbar from "./components/Searchbar/Searchbar";
 import { fetchImages } from "./api";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
+import Button from "./components/Button/Button";
+import Modal from "./components/Modal/Modal"
 
 function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null)
 
   useEffect(() => {
     if (!query) {
@@ -124,15 +127,28 @@ function App() {
     setImages([]);
   };
 
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+
+  const loadMore = useCallback(()=>{
+    setPage((prev) => prev + 1)
+  },[])
+
+
+
+  const handleImageClick = (url)=>{
+    setSelectedImage(url)
+  }
+
+  const closeModal=()=>{
+    setSelectedImage(null)
+  }
 
   return (
     <>
       <Searchbar onSearch={handleSerch} />
       {loading && <Loader />}
-      <ImageGallery images={images} />
+      <ImageGallery images={images} onImageClick={handleImageClick}/>
+      {images.length>0 && <Button onClick={loadMore}/>}
+      {selectedImage && <Modal onImageUrl={selectedImage} onClose={closeModal}/>}
     </>
   );
 }

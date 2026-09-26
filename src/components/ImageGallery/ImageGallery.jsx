@@ -34,12 +34,12 @@
 
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 
-function ImageGallery({ images }) {
+function ImageGallery({ images,onImageClick }) {
   return (
     <>
       <ul>
         {images.map((img) => {
-          return <ImageGalleryItem key={img.id} img={img} />;
+          return <ImageGalleryItem key={img.id+String(Math.random())} img={img} onImageClick={onImageClick}/>;
         })}
       </ul>
     </>

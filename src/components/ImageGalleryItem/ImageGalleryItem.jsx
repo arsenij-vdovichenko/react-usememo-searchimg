@@ -24,11 +24,11 @@
 
 
 
-function ImageGalleryItem({ img }) {
+function ImageGalleryItem({ img,onImageClick }) {
   return (
     <>
       <li>
-        <img src={img.previewURL} alt={img.tags} />
+        <img src={img.previewURL} alt={img.tags} onClick={()=>onImageClick(img.largeImageURL)}/>
       </li>
     </>
   );
